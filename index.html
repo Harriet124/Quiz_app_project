@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz-App</title>
+    <link rel="stylesheet" type="text/css" href="/asset/style/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body class="">
+
+    <div class="toggle">
+        <!-- <img id="darkModeMoon"  src="/images/icon-moon-dark.svg"> -->
+        <img id="darkModeSun" src="/images/icon-sun-dark.svg">
+
+        <label class="switch">
+            <input type="checkbox" id="toggleSwitch">
+            <span class="slider round"></span>
+        </label>
+
+        <img id="darkModeMoon" src="/images/icon-moon-dark.svg">
+    </div>
+
+    <div class="parent-container">
+        <div class="left-container">
+            <span class="Welcome">Welcome to the </span><br><span class="Quiz">Frontend Quiz!</span>
+
+            <p><i>Pick a subject to get started</i></p>
+
+        </div>
+        <div class="right-container">
+
+            <div class="navigation" id="navigation"></div>
+        </div>
+    </div>
+    <script type="module" src="./asset/script/index.js"></script>
+
+</body>
+
+</html>
