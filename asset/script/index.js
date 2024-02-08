@@ -81,10 +81,10 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                     // Iterate over the options and append them to the container
                     data.quizzes.forEach(function (option) {
                         var listItem = document.createElement("li");
-                        listItem.className = "image-item";
+                        listItem.className = "list-item ";
                         // Create the elements for option letter and content
-                        var title = document.createElement("h1");
-                        title.className = "content";
+                        var title = document.createElement("div");
+                        title.className = "title";
                         title.textContent = option.title;
                         // Add click event listener to the title
                         listItem.addEventListener("click", function () {
@@ -92,10 +92,9 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                             window.location.href = "/question.html?type=".concat(option.title, "&mode=").concat(storedMode);
                         });
                         var img = document.createElement("img");
-                        img.className = "image";
+                        img.className = "question-image";
                         img.src = option.icon;
                         img.style.backgroundColor = option.color;
-                        console.log(option.color);
                         // Append elements to the list item
                         listItem.appendChild(img);
                         listItem.appendChild(title);
@@ -140,7 +139,7 @@ function toggleDarkModeStyles(mode) {
     var body = document.body;
     slider.style.backgroundColor =
         mode === "#f4f6fA" ? "rgba(167, 41, 245, 0.8)" : "rgba(167, 41, 245, 0.8)";
-    body.style.color = mode === "#f4f6fA" ? "#ffffff" : "#313e51";
+    body.style.color = mode === "#f4f6fA" ? "#fff" : "#313e51";
     body.style.backgroundColor = mode === "#f4f6fA" ? "#313E51" : "#F4F6FA";
     body.style.backgroundImage =
         mode === "#f4f6fA"
@@ -151,9 +150,9 @@ function toggleDarkModeStyles(mode) {
 }
 function updateListItems(mode) {
     // Update the list items with the stored mode
-    var listItems = document.querySelectorAll(".image-item");
+    var listItems = document.querySelectorAll(".list-item");
     listItems.forEach(function (item) {
-        item.style.color = mode === "#f4f6fA" ? "#ffffff" : "#313e51";
+        item.style.color = mode === "#f4f6fA" ? "#fff" : "#313e51";
         item.style.backgroundColor = mode === "#f4f6fA" ? "#313E51" : "#F4F6FA";
     });
 }

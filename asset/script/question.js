@@ -61,6 +61,7 @@ function fetchData() {
         });
     });
 }
+var submitted = false;
 document.addEventListener("DOMContentLoaded", function () { return __awaiter(_this, void 0, void 0, function () {
     function updateProgressBar() {
         var progressPercentage = (currentQuestionIndex_1 / filteredData_1[0].questions.length) * 100;
@@ -78,8 +79,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         questionNumber.textContent = "Question ".concat(currentQuestionIndex_1 + 1, " of ").concat(filteredData_1[0].questions.length);
         var questionText = document.createElement("h1");
         questionText.innerHTML = currentQuestion.question;
-        questionText.style.wordWrap = "break-word"; // Add this line for word wrapping
-        questionText.style.maxWidth = "700px"; // Set the maximum width as needed
+        questionText.className = 'question-title';
         leftContainer.appendChild(questionNumber);
         leftContainer.appendChild(questionText);
         var optionsContainer = document.createElement("div");
@@ -88,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         optionsList.classList.add("options-list");
         currentQuestion.options.forEach(function (option, index) {
             var listItem = document.createElement("li");
+            listItem.className = "li";
             var alphabetSpan = document.createElement("span");
             alphabetSpan.textContent = String.fromCharCode(65 + index);
             alphabetSpan.className = "letter";
@@ -107,8 +108,10 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         submitButton.textContent = "Submit Answer";
         submitButton.addEventListener("click", function () {
             var markedOption = optionsList.querySelector(".marked");
+            submitted = true;
             var existingErrorMessage = optionsContainer.querySelector(".error-message");
             if (!markedOption && !existingErrorMessage) {
+                submitted = false;
                 // Create and append an error message element
                 var errorMessage = document.createElement("p");
                 errorMessage.innerHTML =
@@ -129,7 +132,6 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                 });
                 nextButton.style.display = "block";
             }
-            var storedMode = localStorage.getItem("mode");
         });
         var nextButton = document.createElement("button");
         nextButton.textContent = "Next Question";
@@ -137,6 +139,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         nextButton.className = "nextButton";
         // Inside the click event listener for the "Next Question" button
         nextButton.addEventListener("click", function () {
+            submitted = false;
             optionsList.querySelectorAll("li").forEach(function (option) {
                 option.style.outline = "";
                 option.classList.remove("marked", "correct", "wrong");
@@ -148,24 +151,53 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             currentQuestionIndex_1++;
             if (currentQuestionIndex_1 < filteredData_1[0].questions.length) {
                 displayCurrentQuestion();
+                // Store the current question index in sessionStorage
+                sessionStorage.setItem("currentQuestionIndex", currentQuestionIndex_1.toString());
             }
             else {
                 // Hide the progress bar when questions are done
                 document.getElementById("progress-bar-container").style.display =
                     "none";
-                questionListContainer_1.innerHTML = " \n              <div class=\"score-parent-container\">\n              <div class=\"score-left-container\">\n                <span class= \"completed\">Quiz completed</span><br><span class = \"score\">You Scored.. </span>\n              </div>\n          \n              <div class=\"score-right-container\">\n                <div class=\"score-board\">\n                  <span class=\"header\" > <span> ".concat(typeParam_1, "</span> <img src=\"").concat(imageUrl_1, "\" /></span>\n                  <span class=\"digit\">").concat(totalScore_1, " </span>\n                  <span>out of ").concat(filteredData_1[0].questions.length, "</span>\n                </div>\n                <a href=\"/\" > <button class=\"againBtn\">Play Again</button></a>\n\n               \n              </div>\n            </div>");
+                // Create a new container for the score page
+                var scorePageContainer = document.createElement("div");
+                scorePageContainer.classList.add("score-flex");
+                // Left container for the score content
+                var scoreLeftContainer = document.createElement("div");
+                scoreLeftContainer.classList.add("score-left-container");
+                scoreLeftContainer.innerHTML = "\n  <span class=\"completed\">Quiz completed</span><br>\n  <span class=\"score\">You Scored.. </span>\n";
+                // Right container for the score content
+                var scoreRightContainer = document.createElement("div");
+                scoreRightContainer.classList.add("score-right-container");
+                scoreRightContainer.innerHTML = "\n<div class=\"score-board\">\n<span class=\"header\">\n    <img style=\"background-color: ".concat(filteredData_1[0].color, ";\" src=\"").concat(imageUrl_1, "\" />\n    <span>").concat(typeParam_1, "</span>\n</span>\n<span class=\"digit\">").concat(totalScore_1, " </span>\n<p class=\"out\">out of ").concat(filteredData_1[0].questions.length, "</p>\n</div>\n\n  <a href=\"/\"><button class=\"againBtn\">Play Again</button></a>\n");
+                // Append the left and right containers to the score page container
+                scorePageContainer.appendChild(scoreLeftContainer);
+                scorePageContainer.appendChild(scoreRightContainer);
+                // Replace the content of the questionListContainer with the score page container
+                questionListContainer_1.innerHTML = "";
+                var existingFlexContainer = document.querySelector(".container");
+                existingFlexContainer.appendChild(scorePageContainer);
+                // Inside the "Play Again" button click event listener
+                var againBtn = document.querySelector(".againBtn");
+                againBtn.addEventListener("click", function () {
+                    // Clear stored data
+                    sessionStorage.removeItem("currentQuestionIndex");
+                    localStorage.removeItem("quizCompleted");
+                    window.location.href = "/";
+                    // Reset variables and start the quiz again
+                    currentQuestionIndex_1 = 0;
+                    totalScore_1 = 0;
+                    quizCompleted_1 = false;
+                });
             }
         });
         optionsContainer.appendChild(optionsList);
         optionsContainer.appendChild(submitButton);
         optionsContainer.appendChild(nextButton);
         questionListContainer_1.appendChild(optionsContainer);
-        optionsContainer.style.display = "inline-block"; // or use "flex" based on your layout needs
         questionListContainer_1.appendChild(leftContainer);
-        leftContainer.style.display = "inline-block"; // or use "flex" based on your layout needs
         updateProgressBar();
         function optionClickHandler(event) {
-            event.preventDefault(); // Prevent the default behavior
+            event.preventDefault();
             var isAlreadyMarked = this.classList.contains("marked");
             if (!isAlreadyMarked) {
                 markOption(optionsList, this);
@@ -175,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             option.addEventListener("click", optionClickHandler);
         });
     }
-    var currentUrl, urlParams, questionListContainer_1, progressBarContainer, progressBar_1, typeParam_1, headTitle, totalScore_1, currentQuestionIndex_1, data, filteredData_1, imageUrl_1, headImg, e_1;
+    var currentUrl, urlParams, questionListContainer_1, progressBar_1, typeParam_1, headTitle, totalScore_1, currentQuestionIndex_1, storedQuestionIndex, quizCompleted_1, storedQuizCompleted, data, filteredData_1, imageUrl_1, headImg, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -183,13 +215,18 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                 currentUrl = window.location.href;
                 urlParams = new URLSearchParams(new URL(currentUrl).search);
                 questionListContainer_1 = document.getElementById("question-list");
-                progressBarContainer = document.getElementById("progress-bar-container");
                 progressBar_1 = document.getElementById("progress-bar");
                 typeParam_1 = urlParams.get("type");
                 headTitle = document.getElementById("title");
                 headTitle.textContent = typeParam_1;
                 totalScore_1 = 0;
                 currentQuestionIndex_1 = 0;
+                storedQuestionIndex = sessionStorage.getItem("currentQuestionIndex");
+                quizCompleted_1 = false;
+                storedQuizCompleted = localStorage.getItem("quizCompleted");
+                if (storedQuestionIndex) {
+                    currentQuestionIndex_1 = parseInt(storedQuestionIndex, 10);
+                }
                 if (!questionListContainer_1) return [3 /*break*/, 2];
                 return [4 /*yield*/, fetchData()];
             case 1:
@@ -223,16 +260,23 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
 }); });
 function markOption(optionsList, optionElement) {
     var markedOption = optionsList.querySelector(".marked");
-    if (markedOption || optionElement.classList.contains("marked")) {
-        markedOption.classList.remove("marked");
-        markedOption.style.outline = "";
-        var alphabetSpan_1 = markedOption.querySelector(".letter");
-        alphabetSpan_1.style.backgroundColor = ""; // Reset letter background color
+    if (!submitted) {
+        if (markedOption && markedOption !== optionElement) {
+            markedOption.classList.remove("marked");
+            markedOption.style.outline = "";
+            var alphabetSpan_1 = markedOption.querySelector(".letter");
+            if (alphabetSpan_1) {
+                alphabetSpan_1.style.backgroundColor = ""; // Reset letter background color
+            }
+        }
+        optionElement.style.outline = "2px solid rgba(167, 41, 245, 1)";
+        optionElement.classList.add("marked");
+        var alphabetSpan = optionElement.querySelector(".letter");
+        if (alphabetSpan) {
+            alphabetSpan.style.backgroundColor = "#8d00f2b6";
+            alphabetSpan.style.color = "white";
+        }
     }
-    optionElement.style.outline = "2px solid rgba(167, 41, 245, 1)";
-    optionElement.classList.add("marked");
-    var alphabetSpan = optionElement.querySelector(".letter");
-    alphabetSpan.style.backgroundColor = "#8d00f2b6"; // Light purple background color
 }
 function markAnswer(optionsList, correctAnswer) {
     var score = 0;
