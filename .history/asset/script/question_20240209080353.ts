@@ -14,8 +14,6 @@ interface quizzes {
   backgroundColor: string;
 }
 
-let submitted = false;
-
 async function fetchData(): Promise<ApiResponse1> {
   try {
     const response = await fetch("./data.json");
@@ -31,71 +29,7 @@ async function fetchData(): Promise<ApiResponse1> {
     throw error;
   }
 }
-
-function markOption(optionsList: HTMLUListElement, optionElement: HTMLElement) {
-  const markedOption = optionsList.querySelector(".marked") as HTMLElement;
-  if (!submitted) {
-    if (markedOption && markedOption !== optionElement) {
-      markedOption.classList.remove("marked");
-      markedOption.style.outline = "";
-
-      const alphabetSpan = markedOption.querySelector(".letter") as HTMLElement;
-      if (alphabetSpan) {
-        alphabetSpan.style.backgroundColor = ""; // Reset letter background color
-      }
-    }
-
-    optionElement.style.outline = "2px solid rgba(167, 41, 245, 1)";
-    optionElement.classList.add("marked");
-
-    const alphabetSpan = optionElement.querySelector(".letter") as HTMLElement;
-    if (alphabetSpan) {
-      alphabetSpan.style.backgroundColor = "#8d00f2b6";
-      alphabetSpan.style.color = "white";
-    }
-  }
-}
-
-function markAnswer(
-  optionsList: HTMLUListElement,
-  correctAnswer: string
-): number {
-  let score = 0;
-
-  optionsList.querySelectorAll("li").forEach((option) => {
-    const alphabetSpan = option.querySelector(".letter") as HTMLElement;
-    const listItem = option as HTMLLIElement;
-    const crossIcon = document.createElement("span");
-    crossIcon.innerHTML = '<i class="fas fa-times"></i>';
-    crossIcon.className = "crossIcon";
-    const tickIcon = document.createElement("span");
-    tickIcon.innerHTML = '<i class="fas fa-check"></i>';
-    tickIcon.className = "tickIcon";
-
-    if (option.textContent?.endsWith(correctAnswer)) {
-      if (option.classList.contains("marked")) {
-        option.classList.add("correct");
-        option.style.outline = "2px solid green";
-        alphabetSpan.style.backgroundColor = "green";
-        alphabetSpan.style.color = "white";
-        listItem.appendChild(tickIcon);
-
-        score += 1;
-      } else {
-        option.classList.add("correct");
-        listItem.appendChild(tickIcon);
-      }
-    } else if (option.classList.contains("marked")) {
-      listItem.appendChild(crossIcon);
-      option.style.outline = "2px solid red";
-      option.classList.add("wrong");
-      alphabetSpan.style.backgroundColor = "red";
-      alphabetSpan.style.color = "white";
-    }
-  });
-
-  return score;
-}
+let submitted = false;
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
@@ -143,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         function displayCurrentQuestion() {
           questionListContainer.innerHTML = "";
-          
+
           const currentQuestion =
             filteredData[0].questions[currentQuestionIndex];
 
@@ -361,9 +295,82 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
+function markOption(optionsList: HTMLUListElement, optionElement: HTMLElement) {
+  const markedOption = optionsList.querySelector(".marked") as HTMLElement;
+  if (!submitted) {
+    if (markedOption && markedOption !== optionElement) {
+      markedOption.classList.remove("marked");
+      markedOption.style.outline = "";
+
+      const alphabetSpan = markedOption.querySelector(".letter") as HTMLElement;
+      if (alphabetSpan) {
+        alphabetSpan.style.backgroundColor = ""; // Reset letter background color
+      }
+    }
+
+    optionElement.style.outline = "2px solid rgba(167, 41, 245, 1)";
+    optionElement.classList.add("marked");
+
+    const alphabetSpan = optionElement.querySelector(".letter") as HTMLElement;
+    if (alphabetSpan) {
+      alphabetSpan.style.backgroundColor = "#8d00f2b6";
+      alphabetSpan.style.color = "white";
+    }
+  }
+}
+
+function markAnswer(
+  optionsList: HTMLUListElement,
+  correctAnswer: string
+): number {
+  let score = 0;
+
+  optionsList.querySelectorAll("li").forEach((option) => {
+    const alphabetSpan = option.querySelector(".letter") as HTMLElement;
+    const listItem = option as HTMLLIElement;
+    const crossIcon = document.createElement("span");
+    crossIcon.innerHTML = '<i class="fas fa-times"></i>';
+    crossIcon.className = "crossIcon";
+    const tickIcon = document.createElement("span");
+    tickIcon.innerHTML = '<i class="fas fa-check"></i>';
+    tickIcon.className = "tickIcon";
+
+    if (option.textContent?.endsWith(correctAnswer)) {
+      if (option.classList.contains("marked")) {
+        option.classList.add("correct");
+        option.style.outline = "2px solid green";
+        alphabetSpan.style.backgroundColor = "green";
+        alphabetSpan.style.color = "white";
+        listItem.appendChild(tickIcon);
+
+        score += 1;
+      } else {
+        option.classList.add("correct");
+        listItem.appendChild(tickIcon);
+      }
+    } else if (option.classList.contains("marked")) {
+      listItem.appendChild(crossIcon);
+      option.style.outline = "2px solid red";
+      option.classList.add("wrong");
+      alphabetSpan.style.backgroundColor = "red";
+      alphabetSpan.style.color = "white";
+    }
+  });
+
+  return score;
+}
+
 const toggleSwitch = document.getElementById(
   "toggleSwitch"
 ) as HTMLInputElement;
+
+const storedMode = localStorage.getItem("mode");
+
+if (storedMode) {
+  const slider = document.querySelector(".slider") as HTMLElement;
+  toggleDarkModeStyles(storedMode);
+  toggleSwitch.checked = storedMode === "#f4f6fA";
+}
 
 toggleSwitch.addEventListener("change", () => {
   const mode = toggleSwitch.checked ? "#f4f6fA" : "black";

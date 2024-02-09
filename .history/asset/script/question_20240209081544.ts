@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         function displayCurrentQuestion() {
           questionListContainer.innerHTML = "";
-          
+
           const currentQuestion =
             filteredData[0].questions[currentQuestionIndex];
 

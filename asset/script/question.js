@@ -35,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
+var submitted = false;
 function fetchData() {
     return __awaiter(this, void 0, void 0, function () {
         var response, data, error_1;
@@ -61,7 +62,62 @@ function fetchData() {
         });
     });
 }
-var submitted = false;
+function markOption(optionsList, optionElement) {
+    var markedOption = optionsList.querySelector(".marked");
+    if (!submitted) {
+        if (markedOption && markedOption !== optionElement) {
+            markedOption.classList.remove("marked");
+            markedOption.style.outline = "";
+            var alphabetSpan_1 = markedOption.querySelector(".letter");
+            if (alphabetSpan_1) {
+                alphabetSpan_1.style.backgroundColor = ""; // Reset letter background color
+            }
+        }
+        optionElement.style.outline = "2px solid rgba(167, 41, 245, 1)";
+        optionElement.classList.add("marked");
+        var alphabetSpan = optionElement.querySelector(".letter");
+        if (alphabetSpan) {
+            alphabetSpan.style.backgroundColor = "#8d00f2b6";
+            alphabetSpan.style.color = "white";
+        }
+    }
+}
+function markAnswer(optionsList, correctAnswer) {
+    var score = 0;
+    optionsList.querySelectorAll("li").forEach(function (option) {
+        var _a;
+        var alphabetSpan = option.querySelector(".letter");
+        var listItem = option;
+        var crossIcon = document.createElement("span");
+        crossIcon.innerHTML = '<i class="fas fa-times"></i>';
+        crossIcon.className = "crossIcon";
+        var tickIcon = document.createElement("span");
+        tickIcon.innerHTML = '<i class="fas fa-check"></i>';
+        tickIcon.className = "tickIcon";
+        if ((_a = option.textContent) === null || _a === void 0 ? void 0 : _a.endsWith(correctAnswer)) {
+            if (option.classList.contains("marked")) {
+                option.classList.add("correct");
+                option.style.outline = "2px solid green";
+                alphabetSpan.style.backgroundColor = "green";
+                alphabetSpan.style.color = "white";
+                listItem.appendChild(tickIcon);
+                score += 1;
+            }
+            else {
+                option.classList.add("correct");
+                listItem.appendChild(tickIcon);
+            }
+        }
+        else if (option.classList.contains("marked")) {
+            listItem.appendChild(crossIcon);
+            option.style.outline = "2px solid red";
+            option.classList.add("wrong");
+            alphabetSpan.style.backgroundColor = "red";
+            alphabetSpan.style.color = "white";
+        }
+    });
+    return score;
+}
 document.addEventListener("DOMContentLoaded", function () { return __awaiter(_this, void 0, void 0, function () {
     function updateProgressBar() {
         var progressPercentage = (currentQuestionIndex_1 / filteredData_1[0].questions.length) * 100;
@@ -79,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         questionNumber.textContent = "Question ".concat(currentQuestionIndex_1 + 1, " of ").concat(filteredData_1[0].questions.length);
         var questionText = document.createElement("h1");
         questionText.innerHTML = currentQuestion.question;
-        questionText.className = 'question-title';
+        questionText.className = "question-title";
         leftContainer.appendChild(questionNumber);
         leftContainer.appendChild(questionText);
         var optionsContainer = document.createElement("div");
@@ -258,69 +314,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         }
     });
 }); });
-function markOption(optionsList, optionElement) {
-    var markedOption = optionsList.querySelector(".marked");
-    if (!submitted) {
-        if (markedOption && markedOption !== optionElement) {
-            markedOption.classList.remove("marked");
-            markedOption.style.outline = "";
-            var alphabetSpan_1 = markedOption.querySelector(".letter");
-            if (alphabetSpan_1) {
-                alphabetSpan_1.style.backgroundColor = ""; // Reset letter background color
-            }
-        }
-        optionElement.style.outline = "2px solid rgba(167, 41, 245, 1)";
-        optionElement.classList.add("marked");
-        var alphabetSpan = optionElement.querySelector(".letter");
-        if (alphabetSpan) {
-            alphabetSpan.style.backgroundColor = "#8d00f2b6";
-            alphabetSpan.style.color = "white";
-        }
-    }
-}
-function markAnswer(optionsList, correctAnswer) {
-    var score = 0;
-    optionsList.querySelectorAll("li").forEach(function (option) {
-        var _a;
-        var alphabetSpan = option.querySelector(".letter");
-        var listItem = option;
-        var crossIcon = document.createElement("span");
-        crossIcon.innerHTML = '<i class="fas fa-times"></i>';
-        crossIcon.className = "crossIcon";
-        var tickIcon = document.createElement("span");
-        tickIcon.innerHTML = '<i class="fas fa-check"></i>';
-        tickIcon.className = "tickIcon";
-        if ((_a = option.textContent) === null || _a === void 0 ? void 0 : _a.endsWith(correctAnswer)) {
-            if (option.classList.contains("marked")) {
-                option.classList.add("correct");
-                option.style.outline = "2px solid green";
-                alphabetSpan.style.backgroundColor = "green";
-                alphabetSpan.style.color = "white";
-                listItem.appendChild(tickIcon);
-                score += 1;
-            }
-            else {
-                option.classList.add("correct");
-                listItem.appendChild(tickIcon);
-            }
-        }
-        else if (option.classList.contains("marked")) {
-            listItem.appendChild(crossIcon);
-            option.style.outline = "2px solid red";
-            option.classList.add("wrong");
-            alphabetSpan.style.backgroundColor = "red";
-            alphabetSpan.style.color = "white";
-        }
-    });
-    return score;
-}
 var toggleSwitch = document.getElementById("toggleSwitch");
-var storedMode = localStorage.getItem("mode");
-if (storedMode) {
-    var slider = document.querySelector(".slider");
-    toggleDarkModeStyles(storedMode);
-    toggleSwitch.checked = storedMode === "#f4f6fA";
-}
 toggleSwitch.addEventListener("change", function () {
     var mode = toggleSwitch.checked ? "#f4f6fA" : "black";
     localStorage.setItem("mode", mode);

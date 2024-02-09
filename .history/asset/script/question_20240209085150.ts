@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             (currentQuestionIndex / filteredData[0].questions.length) * 100;
           progressBar.style.width = `${progressPercentage}%`;
         }
-
+        
         if (headImg && imageUrl) {
           headImg.src = imageUrl;
           headImg.style.backgroundColor = filteredData[0].color;
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         function displayCurrentQuestion() {
           questionListContainer.innerHTML = "";
-          
+
           const currentQuestion =
             filteredData[0].questions[currentQuestionIndex];
 
