@@ -345,7 +345,7 @@ input:checked + .slider:before {
 
 .score-board {
   background-color: #ffffff;
-  height: 228px;
+  height: 258px;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 24px 56px, rgba(17, 17, 26, 0.052) 0px 24px 80px;
   padding: 25px;
   gap: 30px;
