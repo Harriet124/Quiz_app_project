@@ -145,6 +145,7 @@ input:checked + .slider:before {
   font-size: 64px;
   border-style:hidden;
   outline:none;
+  color:#313e51;
   font-weight: 500;
   font-style: bold;
    
