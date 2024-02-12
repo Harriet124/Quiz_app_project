@@ -1,0 +1,200 @@
+body {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  margin: 0;
+  font-family: 'Rubik', sans-serif;
+  background-image: url("/images/pattern-background-desktop-light.svg");
+  background-size: cover;
+  background-color: #f4f6fA;
+  overflow-y: scroll;
+}
+
+/* For browsers like Chrome and Safari */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.head_img {
+  padding: 7px 10px;
+  border-radius: 3px;
+}
+
+.title {
+  font-size: 30px;
+  font-variant: normal;
+}
+
+.toggle {
+  float: right;
+  display: inline-flex;
+  gap: 10px;
+}
+
+.container {
+  margin: 60px 100px;
+}
+
+#question-container {
+  margin: 0;
+}
+
+.left-container {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid red;
+  height: 25rem;
+}
+
+.letter {
+  background-color: rgba(231, 231, 232, 0.9);
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-right: 20px;
+  opacity: 0.8;
+  color: #313E51;
+}
+
+.options-list li {
+  padding: 0 20px;
+  border-radius: 20px;
+  list-style: none;
+  font-size: 1.5rem;
+  font-style: normal;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 90px;
+  font-weight: 700;
+  width: 100%;
+  height: 12vh;
+  text-overflow: ellipsis;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.options-list li:hover .letter {
+  background-color: #8f0eec40;
+  color: #A729F5;
+}
+
+.options-list li:active .letter {
+  color: #ffffff;
+}
+
+#question-list {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  color: inherit;
+}
+
+.options-container {
+  align-items: left;
+  width: 700px;
+}
+
+.options-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+}
+
+.submit,
+.nextButton {
+  background-color: #A729F5;
+  padding: 15px;
+  font-size: 30px;
+  color: #ffffff;
+  gap: 10px;
+  align-items: center;
+  border-radius: 24px;
+  border: 5px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.submit:hover,
+.nextButton:hover {
+  background-color: #d296f7;
+}
+
+#progress-bar-container {
+  height: 10px;
+  background-color: #ffffff;
+  border-radius: 100px;
+  margin-top: 8rem;
+  box-shadow: rgba(0, 0, 0, 0.031) 0px 5px 4px;
+}
+
+#progress-bar {
+  height: 100%;
+  width: 0;
+  border-radius: 100px;
+  background-color: #A729F5;
+}
+
+.crossIcon,
+.tickIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 17px;
+  padding: 3px;
+  width: 17px;
+  font-size: 17px;
+}
+
+.crossIcon {
+  text-align: center;
+  color: #EE5454;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  border: 2px solid #EE5454;
+  float: right;
+  margin-left: auto;
+}
+
+.cross,
+.tickIcon {
+  text-align: center;
+  border-radius: 50%;
+  height: 17px;
+  padding: 3px;
+  width: 17px;
+  font-size: 17px;
+}
+
+.tickIcon {
+  color: #26D782;
+  border: 2px solid #26D782;
+  float: right;
+  margin-left: auto;
+}
+
+.switch {
+  position: relative;
+  display: inline
+}

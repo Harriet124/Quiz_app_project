@@ -164,7 +164,6 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         submitButton.textContent = "Submit Answer";
         submitButton.addEventListener("click", function () {
             var markedOption = optionsList.querySelector(".marked");
-            submitted = true;
             var existingErrorMessage = optionsContainer.querySelector(".error-message");
             if (!markedOption && !existingErrorMessage) {
                 submitted = false;
@@ -181,6 +180,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                 });
             }
             if (markedOption) {
+                submitted = true;
                 totalScore_1 += markAnswer(optionsList, currentQuestion.answer);
                 submitButton.style.display = "none";
                 optionsList.querySelectorAll("li").forEach(function (option) {
